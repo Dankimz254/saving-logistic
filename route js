@@ -3,17 +3,21 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const router = express.Router();
 
-router.post("/register", async (req, res) => {
-  const { email, password } = req.body;
-  const exists = await User.findOne({ email });
-  if (exists) return res.status(400).json({ message: "Email already exists" });
+app.post("/api/signup", async (req, res) => {
+  const { name, email, password } = req.body;
 
-  const hashed = await bcrypt.hash(password, 10);
-  const user = new User({ email, password: hashed });
-  await user.save();
+  // Example validation
+  if (!name || !email || !password) {
+    return res.status(400).json({ success: false, message: "Missing fields" });
+  }
 
-  res.json({ message: "User registered successfully" });
+  // Example save to database (mock)
+  console.log("New user:", name, email);
+  
+  // Respond to frontend
+  res.json({ success: true, message: "Account created!" });
 });
+
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
